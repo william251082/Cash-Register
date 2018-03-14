@@ -134,6 +134,7 @@ Orders.attachSchema([
   Schemas.contactInformation,
   Schemas.License,
     Schemas.Installation,
+    Schemas.Hardware,
   Schemas.paymentInformation
 ]);
 
@@ -187,10 +188,10 @@ Router.route('/basic/:step?', {
   onBeforeAction: function() {
     if (!this.params.step) {
       this.redirect('basic', {
-        step: 'contact-information',
           step: 'license',
           step: 'hardware',
-          step: 'installation'
+          step: 'installation',
+          step: 'contact-information'
       });
     } else {
       this.next();
