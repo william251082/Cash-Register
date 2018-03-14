@@ -27,20 +27,29 @@ Schemas.contactInformation = new SimpleSchema({
     }
 });
 
-// Schemas.License = new SimpleSchema({
-//     amount:{
-//         type: Integer,
-//         label: 'Amount'
-//     },
-//     costs:{
-//         type: String,
-//         label: 'Costs'
-//     },
-//     total: {
-//         type: String,
-//         label: 'Total'
-//     }
-// });
+Schemas.License = new SimpleSchema({
+    fields: {
+        type: String,
+        label: 'License',
+        allowedValues: ["Basic", "Register", "Printer"]
+    }
+});
+
+Schemas.Hardware = new SimpleSchema({
+    fields: {
+        type: String,
+        label: 'Hardware',
+        allowedValues: [
+            "Terminal (15.6\")",
+            "Tablet (10.0\")",
+            "Tablet houder",
+            "Mobile (5.0\")",
+            "Barprinter",
+            "Keukenprinter",
+            "Kassalade"
+        ]
+    }
+});
 
 Schemas.paymentInformation = new SimpleSchema({
   paymentMethod: {
@@ -73,6 +82,7 @@ Schemas.paymentInformation = new SimpleSchema({
 
 Orders.attachSchema([
   Schemas.contactInformation,
+  Schemas.License,
   Schemas.paymentInformation
 ]);
 
@@ -80,9 +90,20 @@ Template.basic.helpers({
   steps: function() {
     return [{
       id: 'contact-information',
-      title: 'Contact information',
+      title: 'Contact',
       schema: Schemas.contactInformation
-    }, {
+    },
+        {
+            id: 'license',
+            title: 'License',
+            schema: Schemas.License
+        },
+        {
+            id: 'hardware',
+            title: 'Hardware',
+            schema: Schemas.Hardware
+        },
+        {
       id: 'payment-information',
       title: 'Payment & confirm',
       schema: Schemas.paymentInformation,
@@ -110,7 +131,8 @@ Router.route('/basic/:step?', {
     if (!this.params.step) {
       this.redirect('basic', {
         step: 'contact-information',
-          step: 'license'
+          step: 'license',
+          step: 'hardware'
       });
     } else {
       this.next();
