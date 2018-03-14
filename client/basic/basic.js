@@ -1,3 +1,7 @@
+// import SimpleSchema from 'simpl-schema';
+// import { Tracker } from 'meteor/tracker';
+
+
 Orders = new Meteor.Collection('orders', {connection: null});
 
 Schemas.contactInformation = new SimpleSchema({
@@ -10,7 +14,7 @@ Schemas.contactInformation = new SimpleSchema({
         label: 'Last Name'
     },
   phone: {
-    type: String,
+    type: Number,
     label: 'Phone Number'
   },
   email: {
@@ -28,7 +32,7 @@ Schemas.contactInformation = new SimpleSchema({
 });
 
 Schemas.License = new SimpleSchema({
-    fields: {
+    license: {
         type: String,
         label: 'License',
         allowedValues: ["Basic", "Register", "Printer"]
@@ -36,22 +40,68 @@ Schemas.License = new SimpleSchema({
 });
 
 Schemas.Hardware = new SimpleSchema({
-    fields: {
+    hardware: {
+        type: Array,
+        minCount: 1,
+        maxCount: 7,
+        label: 'Choose Hardware',
+        autoform: {
+            options: [
+                {
+                    label: "Terminal (15.6\")",
+                    value: "Terminal (15.6\")"
+                },
+                {
+                    label: "Tablet (10.0\")",
+                    value: "Tablet (10.0\")"
+                },
+                {
+                    label: "Tablet houder",
+                    value: "Tablet houder"
+                },
+                {
+                    label: "Mobile (5.0\")",
+                    value: "Mobile (5.0\")"
+                },
+                {
+                    label: "Barprinter",
+                    value: "Barprinter"
+                },
+                {
+                    label: "Keukenprinter",
+                    value: "Keukenprinter"
+                },
+                {
+                    label: "Kassalade",
+                    value: "Kassalade"
+                }
+            ]
+        }
+    },
+    'hardware.$': {
+        type: String
+    }
+});
+
+Schemas.Installation = new SimpleSchema({
+    installation: {
         type: String,
-        label: 'Hardware',
-        allowedValues: [
-            "Terminal (15.6\")",
-            "Tablet (10.0\")",
-            "Tablet houder",
-            "Mobile (5.0\")",
-            "Barprinter",
-            "Keukenprinter",
-            "Kassalade"
-        ]
+        label: 'Installation',
+        allowedValues: ["Standard", "Wiring"]
     }
 });
 
 Schemas.paymentInformation = new SimpleSchema({
+    choose: {
+        type: String,
+        allowedValues: [
+            'Monthly',
+            'Yearly',
+            '3-years'
+        ],
+        optional: true,
+        label: 'Choose a payment plan'
+    },
   paymentMethod: {
     type: String,
     label: 'Payment method',
@@ -64,7 +114,7 @@ Schemas.paymentInformation = new SimpleSchema({
         label: 'Bank transfer',
         value: 'bank-transfer'
       }]
-    }
+    },
   },
   acceptTerms: {
     type: Boolean,
@@ -83,6 +133,7 @@ Schemas.paymentInformation = new SimpleSchema({
 Orders.attachSchema([
   Schemas.contactInformation,
   Schemas.License,
+    Schemas.Installation,
   Schemas.paymentInformation
 ]);
 
@@ -103,6 +154,12 @@ Template.basic.helpers({
             title: 'Hardware',
             schema: Schemas.Hardware
         },
+        {
+            id: 'installation',
+            title: 'Installation',
+            schema: Schemas.Installation
+        },
+
         {
       id: 'payment-information',
       title: 'Payment & confirm',
@@ -132,7 +189,8 @@ Router.route('/basic/:step?', {
       this.redirect('basic', {
         step: 'contact-information',
           step: 'license',
-          step: 'hardware'
+          step: 'hardware',
+          step: 'installation'
       });
     } else {
       this.next();
