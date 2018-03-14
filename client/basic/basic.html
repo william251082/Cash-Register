@@ -1,0 +1,12 @@
+<template name="basic">
+  {{> wizard id="basic"
+          route="basic"
+          steps=steps stepsTemplate="steps_semanticUI"
+          buttonClasses="ui button"}}
+</template>
+
+<template name="viewOrder">
+  <p>Thanks for your order {{name}}.</p>
+
+  <a href="/" class="ui button">Place another order</a>
+</template>

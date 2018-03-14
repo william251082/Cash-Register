@@ -1,0 +1,16 @@
+<head>
+  <title>Mr. Winston's Cash Register</title>
+</head>
+
+<template name="layout">
+  <div class="main container">
+    <h1>Mr. Winston's Cash Register</h1>
+
+    <div class="ui purple inverted menu">
+      <a href="{{pathFor route='basic'}}" class="ui item">Basic</a>
+      <a href="{{pathFor route='dynamic'}}" class="ui item">Dynamic</a>
+    </div>
+
+    {{> yield}}
+  </div>
+</template>
