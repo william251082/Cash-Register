@@ -2,7 +2,7 @@
 // import { Tracker } from 'meteor/tracker';
 
 
-Orders = new Meteor.Collection('orders', {connection: null});
+Orders = new Mongo.Collection('orders', {connection: null});
 
 Schemas.contactInformation = new SimpleSchema({
   firstName:{
@@ -92,7 +92,7 @@ Schemas.Installation = new SimpleSchema({
 });
 
 Schemas.paymentInformation = new SimpleSchema({
-    choose: {
+    paymentPlan: {
         type: String,
         allowedValues: [
             'Monthly',
@@ -191,6 +191,7 @@ Router.route('/basic/:step?', {
           step: 'license',
           step: 'hardware',
           step: 'installation',
+          step: 'payment',
           step: 'contact-information'
       });
     } else {

@@ -8,4 +8,11 @@ Router.route('/', function() {
 
 Meteor.startup(function() {
   AutoForm.setDefaultTemplate("semanticUI");
+
+  // Meteor.publish('orders.allOrders', () => {
+  //     return Orders.find();
+  // })
+  //
+  //   const numberOrders = Orders.find({}).count();
+  // console.log(numberOrders);
 });
